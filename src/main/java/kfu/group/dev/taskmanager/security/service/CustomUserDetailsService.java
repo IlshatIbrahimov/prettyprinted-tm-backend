@@ -13,14 +13,14 @@ import org.springframework.web.server.ResponseStatusException;
 @Service
 public class CustomUserDetailsService implements UserDetailsService {
 
-    final UserRepo userRepo;
+    private final UserRepo userRepo;
 
     public CustomUserDetailsService(UserRepo userRepo) {
         this.userRepo = userRepo;
     }
 
     @Override
-    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
+    public CustomUserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
 
         User user = userRepo.findByEmail(email);
 

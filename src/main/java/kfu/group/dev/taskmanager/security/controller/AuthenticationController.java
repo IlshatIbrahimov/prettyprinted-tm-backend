@@ -4,6 +4,7 @@ import kfu.group.dev.taskmanager.model.User;
 import kfu.group.dev.taskmanager.repository.UserRepo;
 import kfu.group.dev.taskmanager.security.form.AuthenticationRequest;
 import kfu.group.dev.taskmanager.security.form.AuthenticationResponse;
+import kfu.group.dev.taskmanager.security.service.CustomUserDetails;
 import kfu.group.dev.taskmanager.security.service.CustomUserDetailsService;
 import kfu.group.dev.taskmanager.security.util.JwtUtil;
 import org.springframework.http.HttpStatus;
@@ -44,10 +45,10 @@ public class AuthenticationController {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
         }
 
-        UserDetails userDetails = customUserDetailsService.loadUserByUsername(authenticationRequest.getEmail());
+        CustomUserDetails userDetails = customUserDetailsService.loadUserByUsername(authenticationRequest.getEmail());
         String jwt = jwtUtil.generateToken(userDetails);
 
-        User user = userRepo.findByEmail(userDetails.getUsername());
+        User user = userRepo.findByEmail(userDetails.getEmail());
 
         return ResponseEntity.ok(new AuthenticationResponse(jwt, user));
     }

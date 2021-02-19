@@ -3,6 +3,7 @@ package kfu.group.dev.taskmanager.security.util;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
+import kfu.group.dev.taskmanager.security.service.CustomUserDetails;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
@@ -39,7 +40,7 @@ public class JwtUtil {
 
     public String generateToken(UserDetails userDetails) {
         Map<String, Object> claims = new HashMap<>();
-        return createToken(claims, userDetails.getUsername());
+        return createToken(claims, ((CustomUserDetails) userDetails).getEmail());
     }
 
     private String createToken(Map<String, Object> claims, String subject) {
@@ -50,6 +51,6 @@ public class JwtUtil {
 
     public Boolean validateToken(String token, UserDetails userDetails) {
         final String username = extractUsername(token);
-        return (username.equals(userDetails.getUsername()) && !isTokenExpired(token));
+        return (username.equals(((CustomUserDetails) userDetails).getEmail()) && !isTokenExpired(token));
     }
 }
