@@ -30,7 +30,7 @@ public class RegistrationService {
     public ResponseEntity<?> register(RegistrationForm registrationForm) {
 
         if (userRepo.findByEmail(registrationForm.getEmail()) != null) {
-            return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Email address has been already registered");
+            return ResponseEntity.status(422).body("Email address has been already registered");
         }
 
         User user = User.builder()

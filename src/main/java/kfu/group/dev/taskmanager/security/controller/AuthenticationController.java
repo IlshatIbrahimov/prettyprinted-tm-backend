@@ -40,7 +40,12 @@ public class AuthenticationController {
     public ResponseEntity<?> createAuthenticationToken(@Valid @RequestBody AuthenticationRequest authenticationRequest) {
         try {
             authenticationManager
-                .authenticate(new UsernamePasswordAuthenticationToken(authenticationRequest.getEmail(), authenticationRequest.getPassword()));
+                .authenticate(
+                    new UsernamePasswordAuthenticationToken(
+                        authenticationRequest.getEmail(),
+                        authenticationRequest.getPassword()
+                    )
+                );
         } catch (BadCredentialsException e) {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
         }
