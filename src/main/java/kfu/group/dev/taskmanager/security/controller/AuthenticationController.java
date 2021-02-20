@@ -7,16 +7,17 @@ import kfu.group.dev.taskmanager.security.form.AuthenticationResponse;
 import kfu.group.dev.taskmanager.security.service.CustomUserDetails;
 import kfu.group.dev.taskmanager.security.service.CustomUserDetailsService;
 import kfu.group.dev.taskmanager.security.util.JwtUtil;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/auth")
@@ -38,6 +39,7 @@ public class AuthenticationController {
 
     @PostMapping
     public ResponseEntity<?> createAuthenticationToken(@Valid @RequestBody AuthenticationRequest authenticationRequest) {
+
         try {
             authenticationManager
                 .authenticate(
@@ -46,8 +48,12 @@ public class AuthenticationController {
                         authenticationRequest.getPassword()
                     )
                 );
-        } catch (BadCredentialsException e) {
-            return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+        } catch (Exception e) {
+            return ResponseEntity
+                .status(401)
+                .body(
+                    Map.of("message", "Wrong email or password!")
+                );
         }
 
         CustomUserDetails userDetails = customUserDetailsService.loadUserByUsername(authenticationRequest.getEmail());
