@@ -6,6 +6,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
+import java.util.List;
 
 @Data
 @Entity
@@ -19,5 +21,13 @@ public class Project {
     private long id;
 
     @Column
+    @NotBlank
     private String name;
+
+    @OneToMany(
+        mappedBy = "project",
+        cascade = CascadeType.ALL,
+        orphanRemoval = true
+    )
+    private List<Task> taskList;
 }
