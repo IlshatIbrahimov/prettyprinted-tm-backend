@@ -2,6 +2,7 @@ package kfu.group.dev.taskmanager.controller;
 
 import kfu.group.dev.taskmanager.form.ProjectForm;
 import kfu.group.dev.taskmanager.model.Project;
+import kfu.group.dev.taskmanager.model.Task;
 import kfu.group.dev.taskmanager.service.ProjectService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -21,7 +22,6 @@ public class ProjectController {
 
     @PostMapping
     private ResponseEntity<?> addProject(@Valid ProjectForm projectForm) {
-        System.out.println("here");
         projectService.addProject(projectForm);
         return ResponseEntity.ok().build();
     }
@@ -34,6 +34,11 @@ public class ProjectController {
     @GetMapping("/{id}")
     private Project getProject(@PathVariable long id) {
         return projectService.getProjectById(id);
+    }
+
+    @GetMapping("/{id}/tasks")
+    private List<Task> getProjectTasks(@PathVariable long id) {
+        return projectService.getProjectTasks(id);
     }
 
     @DeleteMapping("/{id}")
