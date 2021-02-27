@@ -32,13 +32,13 @@ public class TaskController {
     }
 
     @PostMapping
-    private ResponseEntity<?> addTask(@Valid TaskForm taskForm, Authentication authentication) {
+    private ResponseEntity<?> addTask(@Valid @RequestBody TaskForm taskForm, Authentication authentication) {
         taskService.addTask(taskForm, authentication);
         return ResponseEntity.ok().build();
     }
 
     @PutMapping
-    private ResponseEntity<?> updateTask(@Valid TaskUpdateForm taskUpdateForm) {
+    private ResponseEntity<?> updateTask(@Valid @RequestBody TaskUpdateForm taskUpdateForm) {
         taskService.updateTask(taskUpdateForm);
         return ResponseEntity.ok().build();
     }

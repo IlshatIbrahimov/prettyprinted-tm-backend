@@ -21,7 +21,7 @@ public class ProjectController {
     }
 
     @PostMapping
-    private ResponseEntity<?> addProject(@Valid ProjectForm projectForm) {
+    private ResponseEntity<?> addProject(@Valid @RequestBody ProjectForm projectForm) {
         projectService.addProject(projectForm);
         return ResponseEntity.ok().build();
     }
