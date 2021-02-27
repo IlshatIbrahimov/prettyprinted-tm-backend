@@ -1,6 +1,7 @@
 package kfu.group.dev.taskmanager.model;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -22,6 +23,7 @@ public class Task {
     private long id;
 
     @ManyToOne
+    @JsonIgnore
     private Project project;
 
     @Column
