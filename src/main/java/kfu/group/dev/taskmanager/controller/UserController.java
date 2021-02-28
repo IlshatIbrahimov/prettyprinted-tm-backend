@@ -2,6 +2,7 @@ package kfu.group.dev.taskmanager.controller;
 
 import kfu.group.dev.taskmanager.model.User;
 import kfu.group.dev.taskmanager.service.UserService;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -17,6 +18,7 @@ public class UserController {
         this.userService = userService;
     }
 
+    @GetMapping
     public List<User> getUsers() {
         return userService.getUsers();
     }
