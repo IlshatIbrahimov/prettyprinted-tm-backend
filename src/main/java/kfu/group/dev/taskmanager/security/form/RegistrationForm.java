@@ -11,11 +11,13 @@ import javax.validation.constraints.Size;
 @AllArgsConstructor
 public class RegistrationForm {
 
+    private static final String EMAIL_REGEXP = "^([a-zA-Z0-9_\\-\\.]+)@((\\[[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\.)|(([a-zA-Z0-9\\-]+\\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\\]?)$";
+
     @NotBlank
     private String name;
     @NotBlank
     private String surname;
-    @Email(regexp = "\\w+@[a-z]+\\.[a-z]{2,4}", message = "Invalid email!")
+    @Email(regexp = EMAIL_REGEXP, message = "Invalid email!")
     private String email;
     @NotBlank
     @Size(min = 8)
