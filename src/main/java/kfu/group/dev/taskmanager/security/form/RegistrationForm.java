@@ -15,7 +15,7 @@ public class RegistrationForm {
     private String name;
     @NotBlank
     private String surname;
-    @Email
+    @Email(regexp = "\\w+@[a-z]+\\.[a-z]{2,4}", message = "Invalid email!")
     private String email;
     @NotBlank
     @Size(min = 8)

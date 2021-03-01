@@ -1,36 +1,33 @@
 package kfu.group.dev.taskmanager.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
+import java.util.List;
 
 @Data
 @Entity
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class User {
+public class Project {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
     @Column
+    @NotBlank
     private String name;
 
-    @Column
-    private String surname;
-
-    @Column
-    @JsonIgnore
-    private String email;
-
-    @Column
-    @JsonIgnore
-    private String password;
-
+    @OneToMany(
+        mappedBy = "project",
+        cascade = CascadeType.ALL,
+        orphanRemoval = true
+    )
+    private List<Task> taskList;
 }

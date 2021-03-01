@@ -1,15 +1,15 @@
 package kfu.group.dev.taskmanager.repository;
 
-import kfu.group.dev.taskmanager.model.User;
+import kfu.group.dev.taskmanager.model.Project;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
 @Repository
-public interface UserRepo extends CrudRepository<User, Long> {
+public interface ProjectRepo extends CrudRepository<Project, Long> {
 
-    User findByEmail(String email);
+    Project findById(long id);
 
-    List<User> findAll();
+    List<Project> findAll();
 }
