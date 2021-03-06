@@ -15,15 +15,15 @@ public class TaskForm {
     @NotBlank
     String taskName;
     @NotNull
-    Integer priority;
+    Integer priorityId;
     @NotNull
     Long projectId;
     @NotNull
     Long assigneeId;
     @NotNull
-    Integer type;
+    Integer typeId;
     @NotNull
-    Integer status;
+    Integer statusId;
     @NotBlank
     String content;
 }

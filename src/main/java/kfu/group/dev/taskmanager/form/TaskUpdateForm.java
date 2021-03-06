@@ -19,13 +19,13 @@ public class TaskUpdateForm {
     String name;
 
     @NotNull
-    Integer priority;
+    Integer priorityId;
 
     @NotNull
-    Integer status;
+    Integer statusId;
 
     @NotNull
-    Integer type;
+    Integer typeId;
 
     @NotNull
     Long assigneeId;
