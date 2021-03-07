@@ -8,6 +8,7 @@ import kfu.group.dev.taskmanager.model.User;
 import kfu.group.dev.taskmanager.model.attribute.TaskPriority;
 import kfu.group.dev.taskmanager.model.attribute.TaskStatus;
 import kfu.group.dev.taskmanager.model.attribute.TaskType;
+import kfu.group.dev.taskmanager.model.comment.updateComment.TaskUpdateComment;
 import kfu.group.dev.taskmanager.repository.TaskRepo;
 import kfu.group.dev.taskmanager.service.attribute.TaskPriorityService;
 import kfu.group.dev.taskmanager.service.attribute.TaskStatusService;
@@ -29,14 +30,16 @@ public class TaskService {
     private final TaskStatusService taskStatusService;
     private final TaskPriorityService taskPriorityService;
     private final TaskTypeService taskTypeService;
+    private final TaskUpdateCommentService taskUpdateCommentService;
 
-    public TaskService(TaskRepo taskRepo, UserService userService, ProjectService projectService, TaskStatusService taskStatusService, TaskPriorityService taskPriorityService, TaskTypeService taskTypeService) {
+    public TaskService(TaskRepo taskRepo, UserService userService, ProjectService projectService, TaskStatusService taskStatusService, TaskPriorityService taskPriorityService, TaskTypeService taskTypeService, TaskUpdateCommentService taskUpdateCommentService) {
         this.taskRepo = taskRepo;
         this.userService = userService;
         this.projectService = projectService;
         this.taskStatusService = taskStatusService;
         this.taskPriorityService = taskPriorityService;
         this.taskTypeService = taskTypeService;
+        this.taskUpdateCommentService = taskUpdateCommentService;
     }
 
     public List<Task> getAllTasks() {
@@ -60,7 +63,6 @@ public class TaskService {
     }
 
     public void addTask(TaskForm taskForm, Authentication authentication) {
-
         User assignee = userService.getUser(taskForm.getAssigneeId());
         User author = userService.getUser(authentication);
         Project project = projectService.getProjectById(taskForm.getProjectId());
@@ -69,7 +71,7 @@ public class TaskService {
         TaskPriority priority = taskPriorityService.findById(taskForm.getPriorityId());
 
         Task task = Task.builder()
-            .name(taskForm.getTaskName())
+            .name(taskForm.getName())
             .content(taskForm.getContent())
             .assignee(assignee)
             .author(author)
@@ -82,7 +84,7 @@ public class TaskService {
         taskRepo.save(task);
     }
 
-    public void updateTask(TaskUpdateForm taskUpdateForm) {
+    public void updateTask(TaskUpdateForm taskUpdateForm, Authentication authentication) {
 
         Optional<Task> optionalTask = taskRepo.findById(taskUpdateForm.getId());
 
@@ -90,18 +92,43 @@ public class TaskService {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Task with id = " + taskUpdateForm.getId() + " doesn't exist!");
         }
 
+        User author = userService.getUser(authentication);
         User assignee = userService.getUser(taskUpdateForm.getAssigneeId());
+
         TaskStatus status = taskStatusService.findById(taskUpdateForm.getStatusId());
         TaskType type = taskTypeService.findById(taskUpdateForm.getTypeId());
         TaskPriority priority = taskPriorityService.findById(taskUpdateForm.getPriorityId());
 
         Task task = optionalTask.get();
-        task.setName(taskUpdateForm.getName());
-        task.setPriority(priority);
-        task.setStatus(status);
-        task.setType(type);
-        task.setAssignee(assignee);
+        List<TaskUpdateComment> updateComments = task.getUpdateComments();
+
+        if (task.getPriority().getId() != priority.getId()) {
+            TaskPriority oldPriority = task.getPriority();
+            updateComments.add(taskUpdateCommentService.createTaskPriorityUpdateComment(task, oldPriority, priority, author));
+            task.setPriority(priority);
+        }
+
+        if (task.getStatus() != status) {
+            TaskStatus oldStatus = task.getStatus();
+            updateComments.add(taskUpdateCommentService.createTaskStatusUpdateComment(task, oldStatus, status, author));
+            task.setStatus(status);
+        }
+
+        if (task.getType().getId() != type.getId()) {
+            TaskType oldType = task.getType();
+            updateComments.add(taskUpdateCommentService.createTaskTypeUpdateComment(task, oldType, type, author));
+            task.setType(type);
+        }
+
+        if (task.getAssignee().getId() != assignee.getId()) {
+            User oldAssignee = task.getAssignee();
+            updateComments.add(taskUpdateCommentService.createTaskAssigneeUpdateComment(task, oldAssignee, assignee, author));
+            task.setAssignee(assignee);
+        }
+
         task.setContent(taskUpdateForm.getContent());
+        task.setUpdateComments(updateComments);
+        task.setName(taskUpdateForm.getName());
 
         taskRepo.save(task);
     }
@@ -111,7 +138,6 @@ public class TaskService {
         if (task.isEmpty()) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Task with id = " + id + " doesn't exist!");
         }
-
         taskRepo.delete(task.get());
     }
 }

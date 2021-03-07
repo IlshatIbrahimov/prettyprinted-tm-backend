@@ -38,8 +38,8 @@ public class TaskController {
     }
 
     @PutMapping
-    private ResponseEntity<?> updateTask(@Valid @RequestBody TaskUpdateForm taskUpdateForm) {
-        taskService.updateTask(taskUpdateForm);
+    private ResponseEntity<?> updateTask(@Valid @RequestBody TaskUpdateForm taskUpdateForm, Authentication authentication) {
+        taskService.updateTask(taskUpdateForm, authentication);
         return ResponseEntity.ok().build();
     }
 
