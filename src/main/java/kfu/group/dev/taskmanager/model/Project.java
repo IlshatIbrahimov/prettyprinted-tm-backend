@@ -1,6 +1,8 @@
 package kfu.group.dev.taskmanager.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.*;
+import com.fasterxml.jackson.databind.SerializationFeature;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import kfu.group.dev.taskmanager.model.comment.Comment;
 import kfu.group.dev.taskmanager.model.comment.userComment.ProjectUserComment;
 import lombok.AllArgsConstructor;
@@ -31,17 +33,34 @@ public class Project {
 
     @JsonIgnore
     @OneToMany(mappedBy = "project", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    List<ProjectUserComment> userComments;
+    List<ProjectUserComment> userComments = new ArrayList<>(0);
 
     @OneToMany(
         mappedBy = "project",
         cascade = CascadeType.ALL,
         orphanRemoval = true
     )
-    private List<Task> taskList;
+    @JsonIgnore
+    private List<Task> taskList = new ArrayList<>();
 
-    public List<ProjectUserComment> getComments() {
-        Collections.sort(userComments);
-        return userComments;
+    @JsonProperty("comments")
+    public List<Comment> getComments() {
+
+        List<Comment> comments = new ArrayList<>();
+
+        if (userComments != null && !userComments.isEmpty()) {
+            comments.addAll(userComments);
+        }
+
+        Collections.sort(comments);
+        return comments;
+    }
+
+    @JsonProperty("tasks")
+    public List<Task> getTasks() {
+        if (taskList == null) {
+            return Collections.emptyList();
+        }
+        return taskList;
     }
 }
