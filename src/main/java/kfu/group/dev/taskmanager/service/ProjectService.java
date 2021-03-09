@@ -36,9 +36,9 @@ public class ProjectService {
         return project;
     }
 
-    public void addProject(ProjectForm projectForm) {
+    public Project addProject(ProjectForm projectForm) {
         Project project = Project.builder().name(projectForm.getName()).build();
-        projectRepo.save(project);
+        return projectRepo.save(project);
     }
 
     public void deleteProject(long id) {

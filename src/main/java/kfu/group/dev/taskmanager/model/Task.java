@@ -114,8 +114,16 @@ public class Task {
 
     @JsonProperty("comments")
     public List<Comment> getComments() {
-        List<Comment> comments = new ArrayList<>(updateComments);
-        comments.addAll(userComments);
+        List<Comment> comments = new ArrayList<>();
+
+        if (userComments != null && !userComments.isEmpty()) {
+            comments.addAll(userComments);
+        }
+
+        if (updateComments != null && !updateComments.isEmpty()) {
+            comments.addAll(updateComments);
+        }
+
         Collections.sort(comments);
         return comments;
     }

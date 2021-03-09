@@ -62,7 +62,7 @@ public class TaskService {
         return task.get();
     }
 
-    public void addTask(TaskForm taskForm, Authentication authentication) {
+    public Task addTask(TaskForm taskForm, Authentication authentication) {
         User assignee = userService.getUser(taskForm.getAssigneeId());
         User author = userService.getUser(authentication);
         Project project = projectService.getProjectById(taskForm.getProjectId());
@@ -82,9 +82,11 @@ public class TaskService {
             .build();
 
         taskRepo.save(task);
+
+        return task;
     }
 
-    public void updateTask(TaskUpdateForm taskUpdateForm, Authentication authentication) {
+    public Task updateTask(TaskUpdateForm taskUpdateForm, Authentication authentication) {
 
         Optional<Task> optionalTask = taskRepo.findById(taskUpdateForm.getId());
 
@@ -131,6 +133,8 @@ public class TaskService {
         task.setName(taskUpdateForm.getName());
 
         taskRepo.save(task);
+
+        return task;
     }
 
     public void deleteTask(long id) {
