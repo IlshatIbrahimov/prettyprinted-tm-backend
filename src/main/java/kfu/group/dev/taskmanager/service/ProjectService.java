@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class ProjectService {
@@ -37,7 +38,13 @@ public class ProjectService {
     }
 
     public Project addProject(ProjectForm projectForm) {
-        Project project = Project.builder().name(projectForm.getName()).build();
+        Project project = projectRepo.findByName(projectForm.getName());
+
+        if (project != null) {
+            throw new ResponseStatusException(HttpStatus.CONFLICT, "Project with a such name already exists!");
+        }
+
+        project = Project.builder().name(projectForm.getName()).build();
         return projectRepo.save(project);
     }
 
