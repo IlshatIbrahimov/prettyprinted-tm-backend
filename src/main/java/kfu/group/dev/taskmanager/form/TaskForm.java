@@ -24,6 +24,6 @@ public class TaskForm {
     Integer typeId;
     @NotNull
     Integer statusId;
-    @NotBlank
+    @NotNull
     String content;
 }
