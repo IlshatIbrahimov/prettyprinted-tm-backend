@@ -22,7 +22,7 @@ public class UserComment extends Comment {
     @JsonProperty
     private final CommentType type = CommentType.USER_COMMENT;
 
-    @Column
+    @Column(columnDefinition = "TEXT")
     @JsonProperty
     private String message;
 
