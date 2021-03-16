@@ -1,5 +1,6 @@
 package kfu.group.dev.taskmanager.form;
 
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -10,26 +11,11 @@ import javax.validation.constraints.NotNull;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class TaskUpdateForm {
-
-    @NotNull
-    Long id;
+public class ProjectCommentForm {
 
     @NotBlank
-    String name;
+    private String content;
 
     @NotNull
-    Integer priorityId;
-
-    @NotNull
-    Integer statusId;
-
-    @NotNull
-    Integer typeId;
-
-    @NotNull
-    Long assigneeId;
-
-    @NotBlank
-    String content;
+    private Long id;
 }

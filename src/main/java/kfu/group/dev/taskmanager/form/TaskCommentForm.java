@@ -10,26 +10,11 @@ import javax.validation.constraints.NotNull;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class TaskUpdateForm {
-
-    @NotNull
-    Long id;
+public class TaskCommentForm {
 
     @NotBlank
-    String name;
+    private String content;
 
     @NotNull
-    Integer priorityId;
-
-    @NotNull
-    Integer statusId;
-
-    @NotNull
-    Integer typeId;
-
-    @NotNull
-    Long assigneeId;
-
-    @NotBlank
-    String content;
+    private Long id;
 }

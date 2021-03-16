@@ -10,10 +10,14 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/task")
 public class TaskController {
+
+    private static final Map<String, String> SUCCESS_DELETE_MESSAGE =
+        Map.ofEntries(Map.entry("message", "The task have been deleted!"));
 
     private final TaskService taskService;
 
@@ -33,19 +37,21 @@ public class TaskController {
 
     @PostMapping
     private ResponseEntity<?> addTask(@Valid @RequestBody TaskForm taskForm, Authentication authentication) {
-        taskService.addTask(taskForm, authentication);
-        return ResponseEntity.ok().build();
+        return ResponseEntity.ok(
+            taskService.addTask(taskForm, authentication)
+        );
     }
 
     @PutMapping
-    private ResponseEntity<?> updateTask(@Valid @RequestBody TaskUpdateForm taskUpdateForm) {
-        taskService.updateTask(taskUpdateForm);
-        return ResponseEntity.ok().build();
+    private ResponseEntity<?> updateTask(@Valid @RequestBody TaskUpdateForm taskUpdateForm, Authentication authentication) {
+        return ResponseEntity.ok(
+            taskService.updateTask(taskUpdateForm, authentication)
+        );
     }
 
     @DeleteMapping("/{id}")
     private ResponseEntity<?> deleteTask(@PathVariable long id) {
         taskService.deleteTask(id);
-        return ResponseEntity.ok().build();
+        return ResponseEntity.ok(SUCCESS_DELETE_MESSAGE);
     }
 }

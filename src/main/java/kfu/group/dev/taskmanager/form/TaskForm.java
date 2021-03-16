@@ -13,17 +13,17 @@ import javax.validation.constraints.NotNull;
 public class TaskForm {
 
     @NotBlank
-    String taskName;
+    String name;
     @NotNull
-    Integer priority;
+    Integer priorityId;
     @NotNull
     Long projectId;
     @NotNull
     Long assigneeId;
     @NotNull
-    Integer type;
+    Integer typeId;
     @NotNull
-    Integer status;
-    @NotBlank
+    Integer statusId;
+    @NotNull
     String content;
 }

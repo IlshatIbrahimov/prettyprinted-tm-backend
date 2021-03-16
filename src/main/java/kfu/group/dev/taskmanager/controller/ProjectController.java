@@ -9,10 +9,14 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/project")
 public class ProjectController {
+
+    private static final Map<String, String> SUCCESS_DELETE_MESSAGE =
+        Map.ofEntries(Map.entry("message", "The project have been deleted!"));
 
     private final ProjectService projectService;
 
@@ -21,9 +25,8 @@ public class ProjectController {
     }
 
     @PostMapping
-    private ResponseEntity<?> addProject(@Valid @RequestBody ProjectForm projectForm) {
-        projectService.addProject(projectForm);
-        return ResponseEntity.ok().build();
+    private Project addProject(@Valid @RequestBody ProjectForm projectForm) {
+        return projectService.addProject(projectForm);
     }
 
     @GetMapping
@@ -44,6 +47,6 @@ public class ProjectController {
     @DeleteMapping("/{id}")
     private ResponseEntity<?> deleteProject(@PathVariable long id) {
         projectService.deleteProject(id);
-        return ResponseEntity.ok().build();
+        return ResponseEntity.ok(SUCCESS_DELETE_MESSAGE);
     }
 }
