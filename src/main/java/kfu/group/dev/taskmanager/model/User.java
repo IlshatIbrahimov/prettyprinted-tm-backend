@@ -1,6 +1,7 @@
 package kfu.group.dev.taskmanager.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import kfu.group.dev.taskmanager.model.listener.UserListener;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -13,6 +14,7 @@ import javax.persistence.*;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
+@EntityListeners(UserListener.class)
 public class User {
 
     @Id

@@ -10,6 +10,7 @@ import kfu.group.dev.taskmanager.model.attribute.TaskType;
 import kfu.group.dev.taskmanager.model.comment.Comment;
 import kfu.group.dev.taskmanager.model.comment.updateComment.TaskUpdateComment;
 import kfu.group.dev.taskmanager.model.comment.userComment.TaskUserComment;
+import kfu.group.dev.taskmanager.model.listener.TaskListener;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -28,6 +29,7 @@ import java.util.Map;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
+@EntityListeners(TaskListener.class)
 public class Task {
 
     @Id
