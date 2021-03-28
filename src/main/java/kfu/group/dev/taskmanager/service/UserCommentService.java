@@ -31,7 +31,7 @@ public class UserCommentService {
         this.taskRepo = taskRepo;
     }
 
-    public void addProjectComment(ProjectCommentForm projectCommentForm, Authentication authentication) {
+    public Project addProjectComment(ProjectCommentForm projectCommentForm, Authentication authentication) {
 
         Project project = projectService.getProjectById(projectCommentForm.getId());
         User author = userService.getUser(authentication);
@@ -47,9 +47,11 @@ public class UserCommentService {
         project.setUserComments(projectUserComments);
 
         projectRepo.save(project);
+
+        return project;
     }
 
-    public void addTaskComment(TaskCommentForm taskCommentForm, Authentication authentication) {
+    public Task addTaskComment(TaskCommentForm taskCommentForm, Authentication authentication) {
 
         Task task = taskService.getTaskById(taskCommentForm.getId());
         User author = userService.getUser(authentication);
@@ -65,5 +67,7 @@ public class UserCommentService {
         task.setUserComments(taskUserComments);
 
         taskRepo.save(task);
+
+        return task;
     }
 }

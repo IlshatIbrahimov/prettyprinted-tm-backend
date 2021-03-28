@@ -51,7 +51,7 @@ public class WebSocketService {
         if (assignee == null) {
             return;
         }
-        sendMessageToDestination(TASK_ASSIGNEE_URL + assignee.getId());
+        assigneeChanged(assignee);
     }
 
     public void taskUpdated(Task task) {
@@ -61,7 +61,7 @@ public class WebSocketService {
         if (assignee == null) {
             return;
         }
-        sendMessageToDestination(TASK_ASSIGNEE_URL + assignee.getId());
+        assigneeChanged(assignee);
     }
 
     public void taskDeleted(Task task) {
@@ -71,11 +71,15 @@ public class WebSocketService {
         if (assignee == null) {
             return;
         }
-        sendMessageToDestination(TASK_ASSIGNEE_URL + assignee.getId());
+        assigneeChanged(assignee);
     }
 
     public void userCreated(User user) {
         sendMessageToDestination(USER_REGISTERED_URL);
+    }
+
+    public void assigneeChanged(User assignee) {
+        sendMessageToDestination(TASK_ASSIGNEE_URL + assignee.getId());
     }
 
     private void sendMessageToDestination(String destination) {

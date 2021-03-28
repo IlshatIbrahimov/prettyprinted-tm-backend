@@ -5,9 +5,7 @@ import kfu.group.dev.taskmanager.service.WebSocketService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import javax.persistence.PostPersist;
-import javax.persistence.PostRemove;
-import javax.persistence.PostUpdate;
+import javax.persistence.*;
 
 @Component
 public class TaskListener {
