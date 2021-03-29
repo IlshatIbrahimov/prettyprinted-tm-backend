@@ -3,6 +3,7 @@ package kfu.group.dev.taskmanager.service;
 import kfu.group.dev.taskmanager.model.Project;
 import kfu.group.dev.taskmanager.model.Task;
 import kfu.group.dev.taskmanager.model.User;
+import kfu.group.dev.taskmanager.model.dialog.Dialog;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Service;
 
@@ -22,6 +23,8 @@ public class WebSocketService {
     private static final String PROJECT_MAIN_URL = "/project/";
     private static final String TASK_ASSIGNEE_URL = "/user/assignee/";
     private static final String USER_REGISTERED_URL = "/user/registered/";
+
+    private static final String NEW_MESSAGE_IN_DIALOG_URL = "/private/";
 
     private final SimpMessagingTemplate simpMessagingTemplate;
 
@@ -72,6 +75,10 @@ public class WebSocketService {
             return;
         }
         assigneeChanged(assignee);
+    }
+
+    public void newMessageInDialog(Dialog dialog) {
+        sendMessageToDestination(NEW_MESSAGE_IN_DIALOG_URL + dialog.getId());
     }
 
     public void userCreated(User user) {
