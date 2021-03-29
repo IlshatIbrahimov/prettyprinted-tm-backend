@@ -2,7 +2,11 @@ package kfu.group.dev.taskmanager.controller;
 
 import kfu.group.dev.taskmanager.form.ProjectCommentForm;
 import kfu.group.dev.taskmanager.form.TaskCommentForm;
+import kfu.group.dev.taskmanager.model.Project;
+import kfu.group.dev.taskmanager.model.Task;
 import kfu.group.dev.taskmanager.service.UserCommentService;
+import kfu.group.dev.taskmanager.service.WebSocketService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -21,20 +25,24 @@ public class UserCommentController {
         Map.ofEntries(Map.entry("message", "The message have been added!"));
 
     private final UserCommentService userCommentService;
+    private final WebSocketService webSocketService;
 
-    public UserCommentController(UserCommentService userCommentService) {
+    public UserCommentController(UserCommentService userCommentService, WebSocketService webSocketService) {
         this.userCommentService = userCommentService;
+        this.webSocketService = webSocketService;
     }
 
     @PostMapping("/project")
     public ResponseEntity<?> addProjectComment(@Valid @RequestBody ProjectCommentForm projectCommentForm, Authentication authentication) {
-        userCommentService.addProjectComment(projectCommentForm, authentication);
+        Project project = userCommentService.addProjectComment(projectCommentForm, authentication);
+        webSocketService.projectUpdated(project);
         return ResponseEntity.ok(SUCCESS_ADD_MESSAGE);
     }
 
     @PostMapping("/task")
     public ResponseEntity<?> addTaskComment(@Valid @RequestBody TaskCommentForm taskCommentForm, Authentication authentication) {
-        userCommentService.addTaskComment(taskCommentForm, authentication);
+        Task task = userCommentService.addTaskComment(taskCommentForm, authentication);
+        webSocketService.taskUpdated(task);
         return ResponseEntity.ok(SUCCESS_ADD_MESSAGE);
     }
 }

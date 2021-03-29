@@ -5,7 +5,6 @@ import kfu.group.dev.taskmanager.model.User;
 import kfu.group.dev.taskmanager.model.comment.Comment;
 import kfu.group.dev.taskmanager.model.comment.CommentType;
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.Column;
@@ -22,7 +21,7 @@ public class UserComment extends Comment {
     @JsonProperty
     private final CommentType type = CommentType.USER_COMMENT;
 
-    @Column
+    @Column(columnDefinition = "TEXT")
     @JsonProperty
     private String message;
 
