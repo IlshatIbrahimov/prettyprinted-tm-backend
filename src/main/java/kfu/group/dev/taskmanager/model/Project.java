@@ -1,10 +1,10 @@
 package kfu.group.dev.taskmanager.model;
 
-import com.fasterxml.jackson.annotation.*;
-import com.fasterxml.jackson.databind.SerializationFeature;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import kfu.group.dev.taskmanager.model.comment.Comment;
 import kfu.group.dev.taskmanager.model.comment.userComment.ProjectUserComment;
+import kfu.group.dev.taskmanager.model.listener.ProjectListener;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -21,6 +21,7 @@ import java.util.List;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
+@EntityListeners(ProjectListener.class)
 public class Project {
 
     @Id

@@ -31,8 +31,9 @@ public class TaskService {
     private final TaskPriorityService taskPriorityService;
     private final TaskTypeService taskTypeService;
     private final TaskUpdateCommentService taskUpdateCommentService;
+    private final WebSocketService webSocketService;
 
-    public TaskService(TaskRepo taskRepo, UserService userService, ProjectService projectService, TaskStatusService taskStatusService, TaskPriorityService taskPriorityService, TaskTypeService taskTypeService, TaskUpdateCommentService taskUpdateCommentService) {
+    public TaskService(TaskRepo taskRepo, UserService userService, ProjectService projectService, TaskStatusService taskStatusService, TaskPriorityService taskPriorityService, TaskTypeService taskTypeService, TaskUpdateCommentService taskUpdateCommentService, WebSocketService webSocketService) {
         this.taskRepo = taskRepo;
         this.userService = userService;
         this.projectService = projectService;
@@ -40,6 +41,7 @@ public class TaskService {
         this.taskPriorityService = taskPriorityService;
         this.taskTypeService = taskTypeService;
         this.taskUpdateCommentService = taskUpdateCommentService;
+        this.webSocketService = webSocketService;
     }
 
     public List<Task> getAllTasks() {
@@ -103,6 +105,7 @@ public class TaskService {
 
         Task task = optionalTask.get();
         List<TaskUpdateComment> updateComments = task.getUpdateComments();
+        User oldAssignee = task.getAssignee();
 
         if (task.getPriority().getId() != priority.getId()) {
             TaskPriority oldPriority = task.getPriority();
@@ -122,8 +125,7 @@ public class TaskService {
             task.setType(type);
         }
 
-        if (task.getAssignee().getId() != assignee.getId()) {
-            User oldAssignee = task.getAssignee();
+        if (oldAssignee.getId() != assignee.getId()) {
             updateComments.add(taskUpdateCommentService.createTaskAssigneeUpdateComment(task, oldAssignee, assignee, author));
             task.setAssignee(assignee);
         }
@@ -133,6 +135,7 @@ public class TaskService {
         task.setName(taskUpdateForm.getName());
 
         taskRepo.save(task);
+        webSocketService.assigneeChanged(oldAssignee);
 
         return task;
     }

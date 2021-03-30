@@ -10,6 +10,7 @@ import kfu.group.dev.taskmanager.model.attribute.TaskType;
 import kfu.group.dev.taskmanager.model.comment.Comment;
 import kfu.group.dev.taskmanager.model.comment.updateComment.TaskUpdateComment;
 import kfu.group.dev.taskmanager.model.comment.userComment.TaskUserComment;
+import kfu.group.dev.taskmanager.model.listener.TaskListener;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -18,6 +19,7 @@ import lombok.NoArgsConstructor;
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -28,7 +30,8 @@ import java.util.Map;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class Task {
+@EntityListeners(TaskListener.class)
+public class Task implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
