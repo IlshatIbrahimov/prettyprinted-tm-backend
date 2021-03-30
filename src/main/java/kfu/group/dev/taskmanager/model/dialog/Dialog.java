@@ -1,7 +1,5 @@
 package kfu.group.dev.taskmanager.model.dialog;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import kfu.group.dev.taskmanager.model.Task;
 import kfu.group.dev.taskmanager.model.User;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -23,7 +21,7 @@ public class Dialog {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    @OneToMany
+    @ManyToMany
     private List<User> users;
 
     @OneToMany(
