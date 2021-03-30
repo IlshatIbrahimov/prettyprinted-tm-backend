@@ -12,7 +12,7 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
 
     @Override
     public void configureMessageBroker(MessageBrokerRegistry config) {
-        config.enableSimpleBroker("/project", "/task", "/user", "/privateпше ");
+        config.enableSimpleBroker("/project", "/task", "/user", "/private");
         config.setApplicationDestinationPrefixes("/app");
     }
 
